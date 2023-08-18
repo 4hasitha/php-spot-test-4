@@ -9,6 +9,10 @@ class OrderController extends Controller
 {
     public function newOrder(Request $request)
     {
+        if(isset($request->customer_name) or isset($request->order_value)){
+            return "Please provide customer name and order value correctly.";
+        }
+
         $order = new Order;
         $order->customer_name = $request->customer_name;
         $order->order_value = $request->order_value;
@@ -17,6 +21,6 @@ class OrderController extends Controller
         $order->process_id = rand (1,10);
         $order->save();
 
-        return "Success";
+        return "Order is successfully added.";
     }
 }
