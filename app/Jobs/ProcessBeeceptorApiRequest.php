@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Order;
+use App\Models\BeeceptorResponse;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +33,6 @@ class ProcessBeeceptorApiRequest implements ShouldQueue
      */
     public function handle(): void
     {
-        echo $this->order->customer_name;
         $response = Http::post('https://wibip.free.beeceptor.com/order', [
             'order_id' => '001',
             'customer_name' => $this->order->customer_name,
@@ -47,5 +47,9 @@ class ProcessBeeceptorApiRequest implements ShouldQueue
         } else {
             $statusCode = $response->status();
         }
+        $beeceptorResponse = new BeeceptorResponse;
+        $beeceptorResponse->order_id = $this->order->id;
+        $beeceptorResponse->response = $response;
+        $beeceptorResponse->save();
     }
 }
