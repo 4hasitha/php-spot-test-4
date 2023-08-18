@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\ProcessBeeceptorApiRequest;
 
 class OrderController extends Controller
 {
     public function newOrder(Request $request)
     {
+        if(empty($request->customer_name) or empty($request->order_value)){
+            return "Please provide customer name and order value correctly.";
+        }
+
         try {
-            if(empty($request->customer_name) or empty($request->order_value)){
-                return "Please provide customer name and order value correctly.";
-            }
-    
             DB::beginTransaction();
             $order = new Order;
             $order->customer_name = $request->customer_name;
@@ -25,27 +26,14 @@ class OrderController extends Controller
             $order->process_id = rand (1,10);
             $order->save();
 
-            $response = Http::post('https://wibip.free.beeceptor.com/order', [
-                'order_id' => '001',
-                'customer_name' => $order->customer_name,
-                'order_value' => $order->order_value,
-                'order_date' => $order->order_date,
-                'order_status' => $order->order_status,
-                'process_id' => $order->process_id,
-            ]);
-        
-            if ($response->successful()) {
-                $responseData = $response->json();
-            } else {
-                $statusCode = $response->status();
-            }
+            ProcessBeeceptorApiRequest::dispatch($order)
+            ->onQueue('beeceptor');
 
             DB::commit();
-
-            return $response;
+            return "Order is in processing.";
         } catch (\Exception $e) {
             DB::rollback();
-            return "Something went wrong, try again.";
+            return "Something went wrong";
         }
     }
 }
