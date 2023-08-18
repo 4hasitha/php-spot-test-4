@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('customer_name');
             $table->double('order_value',8,2);
-            $table->date('order_date');
+            $table->dateTime('order_date');
             $table->integer('order_status');
             $table->integer('process_id');
             $table->timestamps();
