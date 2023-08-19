@@ -96,7 +96,7 @@
             //
             db.employees.add({name: name, email: email,telephone_number:telephoneNumber})
             .then(function() {
-                alert("Employee is added successfully");
+                alert("Employee is added successfully.");
                 location.reload();
             }).catch(function (e) {
                 alert ("Error: " + (e.stack || e));
