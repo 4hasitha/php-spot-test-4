@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "8791bf71-8f42-40ce-9858-4f6a263c2d94",
+		"name": "PHP Spot Test 4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7179283"
+	},
+	"item": [
+		{
+			"name": "sanctum/token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "4hasitha@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "device_name",
+							"value": "lap",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/sanctum/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sanctum",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order/new",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "customer_name",
+							"value": "Kamal Dias",
+							"type": "text"
+						},
+						{
+							"key": "order_value",
+							"value": "130",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/order/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order",
+						"new"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
